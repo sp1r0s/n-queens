@@ -1,7 +1,6 @@
 package sp1r0s.nqueen;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -15,19 +14,19 @@ public class ConflictSolverTest {
         solver = new ConflictSolver();
     }
 
-    // A bit flaky at the moment. This is caused by the random next best move
-    //todo: fix
-    @Ignore
     @Test
-    public void testFrom8x8To20x20() {
-        for (int i = 8; i <= 20; i++) {
+    public void testFrom8x8To100x100() {
+        for (int i = 8; i <= 100; i++) {
             final int numberOfRows = i;
             final int numberOfColumns = i;
             final Chessboard chessboard = new Chessboard(numberOfRows, numberOfColumns);
 
             solver.solve(chessboard);
 
-            assertTrue(chessboard.areQueensSafe());
+            assertTrue(String.format("chessboard: %dx%d",
+                                     numberOfRows,
+                                     numberOfColumns),
+                       chessboard.areQueensSafe());
         }
     }
 
@@ -39,5 +38,6 @@ public class ConflictSolverTest {
 
         assertTrue(chessboard.areQueensSafe());
     }
+
 
 }

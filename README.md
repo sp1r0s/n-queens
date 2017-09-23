@@ -6,7 +6,7 @@ This is my take on the popular problem. I am trying to solve the problem in 2 st
  
 2) Try to resolve the 1 conflict, by trying different combinations
 
-I manage to solve 1000x1000 in 0.084 seconds!
+I manage to solve 1000x1000 in less than 1 second!
 
 
 Todo
