@@ -3,6 +3,9 @@ package sp1r0s.nqueen;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 
 public class ConflictSolverTest {
@@ -15,29 +18,35 @@ public class ConflictSolverTest {
     }
 
     @Test
-    public void testFrom8x8To100x100() {
-        for (int i = 8; i <= 100; i++) {
-            final int numberOfRows = i;
-            final int numberOfColumns = i;
-            final Chessboard chessboard = new Chessboard(numberOfRows, numberOfColumns);
+    public void testSolvability() {
+        for (int numberOfQueens = 8; numberOfQueens <= 100; numberOfQueens++) {
+
+            final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
             solver.solve(chessboard);
 
             assertTrue(String.format("chessboard: %dx%d",
-                                     numberOfRows,
-                                     numberOfColumns),
-                       chessboard.areQueensSafe());
+                    numberOfQueens,
+                    numberOfQueens),
+                    chessboard.areQueensSafe());
         }
+
     }
 
     @Test
-    public void test1000x1000() {
-        final Chessboard chessboard = new Chessboard(1000, 1000);
+    public void testTimeComplexity() {
+        final List<Integer> queensSample = Arrays.asList(8, 100, 200, 400, 800, 1600, 3200, 6400, 12800);
+        for (Integer numberOfQueens : queensSample) {
+            final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
-        solver.solve(chessboard);
+            solver.solve(chessboard);
 
-        assertTrue(chessboard.areQueensSafe());
+            assertTrue(String.format("chessboard: %dx%d",
+                    numberOfQueens,
+                    numberOfQueens),
+                    chessboard.areQueensSafe());
+        }
+
     }
-
 
 }
