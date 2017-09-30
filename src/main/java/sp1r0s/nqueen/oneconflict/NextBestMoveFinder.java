@@ -5,18 +5,34 @@ import sp1r0s.nqueen.model.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static sp1r0s.nqueen.util.Utilities.getMostCentralCoordinate;
+
 
 class NextBestMoveFinder {
 
-    Coordinates find(final Chessboard chessboard, final Coordinates queenToMove) {
+    Optional<Coordinates> find(final Chessboard chessboard, final Coordinates queenToMove) {
 
-        final List<Coordinates> next1ConflictTargets = new ArrayList<>();
-        Chessboard copy;
-        Coordinates movingTarget;
+        final NextBestMove nextBestMoveByMovingUpAndDown = getNextBestMoveByMovingUpAndDown(chessboard, queenToMove);
+        if (nextBestMoveByMovingUpAndDown.optimalMove().isPresent()) {
+            return Optional.of(nextBestMoveByMovingUpAndDown.optimalMove().get());
+        }
 
-        // Try moving up or down
-        copy = new Chessboard(chessboard);
-        movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
+        final NextBestMove nextBestMoveByMovingLeftAndRight = getNextBestMoveByMovingLeftAndRight(chessboard, queenToMove);
+        if (nextBestMoveByMovingLeftAndRight.optimalMove().isPresent()) {
+            return Optional.of(nextBestMoveByMovingLeftAndRight.optimalMove().get());
+        }
+
+        return getNextBest1ConflictMove(nextBestMoveByMovingUpAndDown,
+                                        nextBestMoveByMovingLeftAndRight);
+
+    }
+
+    private NextBestMove getNextBestMoveByMovingUpAndDown(final Chessboard chessboard, final Coordinates queenToMove) {
+        final NextBestMove nextBestMove = new NextBestMove();
+        Chessboard copy = new Chessboard(chessboard);
+        Coordinates movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
         for (int i = 0; i < copy.getNumberOfRows(); i++) {
             Coordinates targetCoordinates = new Coordinates(i, queenToMove.getY());
             if (copy.getQueensLocation().contains(targetCoordinates)
@@ -26,16 +42,20 @@ class NextBestMoveFinder {
             copy.move(movingTarget, targetCoordinates);
 
             if (copy.areQueensSafe()) {
-                return targetCoordinates;
+                nextBestMove.setOptimalMove(targetCoordinates);
+                break;
             } else if (copy.getConflicts().size() == 1) {
-                next1ConflictTargets.add(targetCoordinates);
+                nextBestMove.addOneConflictMove(targetCoordinates);
             }
             movingTarget = targetCoordinates;
         }
+        return nextBestMove;
+    }
 
-        // Try moving left or right
-        copy = new Chessboard(chessboard);
-        movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
+    private NextBestMove getNextBestMoveByMovingLeftAndRight(final Chessboard chessboard, final Coordinates queenToMove) {
+        final NextBestMove nextBestMove = new NextBestMove();
+        Chessboard copy = new Chessboard(chessboard);
+        Coordinates movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
         for (int j = 0; j < copy.getNumberOfColumns(); j++) {
             Coordinates targetCoordinates = new Coordinates(queenToMove.getX(), j);
             if (copy.getQueensLocation().contains(targetCoordinates)
@@ -45,33 +65,51 @@ class NextBestMoveFinder {
             copy.move(movingTarget, targetCoordinates);
 
             if (copy.areQueensSafe()) {
-                return targetCoordinates;
+                nextBestMove.setOptimalMove(targetCoordinates);
+                break;
             } else if (copy.getConflicts().size() == 1) {
-                next1ConflictTargets.add(targetCoordinates);
+                nextBestMove.addOneConflictMove(targetCoordinates);
             }
             movingTarget = targetCoordinates;
         }
-
-        // Decide on next best move
-        if (!next1ConflictTargets.isEmpty()) {
-            /*
-             * Avoid potential infinite loops, by returning a move to a position
-             * closest to the center of the board.
-             */
-            return getNextBest1ConflictMove(next1ConflictTargets);
-        }
-
-        return null;
+        return nextBestMove;
     }
 
-    private Coordinates getNextBest1ConflictMove(final List<Coordinates> next1ConflictTargets) {
-        Coordinates returnTarget = next1ConflictTargets.get(0);
-        for (Coordinates next1ConflictTarget : next1ConflictTargets) {
-            if (Math.abs(next1ConflictTarget.getX() - next1ConflictTarget.getY()) < Math.abs(returnTarget.getX() - returnTarget.getY())) {
-                returnTarget = next1ConflictTarget;
+//    private NextBestMove getNextBestMoveByMovingInRightDiagonal(final Chessboard chessboard, final Coordinates queenToMove) {
+//        final NextBestMove nextBestMove = new NextBestMove();
+//        Chessboard copy = new Chessboard(chessboard);
+//        Coordinates movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
+//        for (int j = 0; j < copy.getNumberOfColumns(); j++) {
+//            Coordinates targetCoordinates = new Coordinates(copy.getNumberOfRows() - 1, j);
+//            if (copy.getQueensLocation().contains(targetCoordinates)
+//                    || targetCoordinates.equals(queenToMove)) {
+//                continue;
+//            }
+//            copy.move(movingTarget, targetCoordinates);
+//
+//            if (copy.areQueensSafe()) {
+//                nextBestMove.setOptimalMove(targetCoordinates);
+//                break;
+//            } else if (copy.getConflicts().size() == 1) {
+//                nextBestMove.addOneConflictMove(targetCoordinates);
+//            }
+//            movingTarget = targetCoordinates;
+//        }
+//        return nextBestMove;
+//    }
+
+    private Optional<Coordinates> getNextBest1ConflictMove(NextBestMove... moves) {
+        List<Coordinates> bestOneConflictMoves = new ArrayList<>();
+        for (NextBestMove move : moves) {
+            if (move.bestOneConflictMove().isPresent()) {
+                bestOneConflictMoves.add(move.bestOneConflictMove().get());
             }
         }
-        return returnTarget;
+
+        if (!bestOneConflictMoves.isEmpty()) {
+            return Optional.of(getMostCentralCoordinate(bestOneConflictMoves));
+        }
+        return Optional.empty();
     }
 
 }

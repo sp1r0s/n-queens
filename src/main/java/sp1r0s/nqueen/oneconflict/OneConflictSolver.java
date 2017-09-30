@@ -5,6 +5,7 @@ import sp1r0s.nqueen.model.Chessboard;
 import sp1r0s.nqueen.model.Conflict;
 import sp1r0s.nqueen.model.Coordinates;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class OneConflictSolver implements NQueensSolver {
@@ -28,14 +29,13 @@ public class OneConflictSolver implements NQueensSolver {
         while (!chessboard.areQueensSafe() && chessboard.getConflicts().size() == 1) {
             conflicts = chessboard.getConflicts();
             final Conflict conflict = conflicts.iterator().next();
-            Coordinates nextBestPosition = finder.find(chessboard, conflict.getB());
-
-            if (nextBestPosition != null) {
-                chessboard.move(conflict.getB(), nextBestPosition);
+            Optional<Coordinates> nextBestPositionOptional = finder.find(chessboard, conflict.getB());
+            if (nextBestPositionOptional.isPresent()) {
+                chessboard.move(conflict.getB(), nextBestPositionOptional.get());
             } else {
-                nextBestPosition = finder.find(chessboard, conflict.getA());
-                if (nextBestPosition != null) {
-                    chessboard.move(conflict.getA(), nextBestPosition);
+                nextBestPositionOptional = finder.find(chessboard, conflict.getA());
+                if (nextBestPositionOptional.isPresent()) {
+                    chessboard.move(conflict.getA(), nextBestPositionOptional.get());
                 } else {
                     break;
                 }

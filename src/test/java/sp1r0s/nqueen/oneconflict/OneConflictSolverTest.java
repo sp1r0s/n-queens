@@ -26,9 +26,9 @@ public class OneConflictSolverTest {
             solver.solve(chessboard);
 
             assertTrue(String.format("chessboard: %dx%d",
-                    numberOfQueens,
-                    numberOfQueens),
-                    chessboard.areQueensSafe());
+                                     numberOfQueens,
+                                     numberOfQueens),
+                                     chessboard.areQueensSafe());
         }
 
     }
@@ -42,9 +42,9 @@ public class OneConflictSolverTest {
         solver.solve(chessboard);
 
         assertTrue(String.format("chessboard: %dx%d",
-                numberOfQueens,
-                numberOfQueens),
-                chessboard.areQueensSafe());
+                                 numberOfQueens,
+                                 numberOfQueens),
+                                 chessboard.areQueensSafe());
 
     }
 

@@ -9,9 +9,23 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Set;
 
 public final class Utilities {
+
+    public static Coordinates getMostCentralCoordinate(List<Coordinates> coordinates) {
+        if (coordinates == null || coordinates.isEmpty()) {
+            throw new IllegalStateException("List should not be undefined or empty");
+        }
+        Coordinates mostCentralCoordinate = coordinates.get(0);
+        for (Coordinates coordinate : coordinates) {
+            if (Math.abs(coordinate.getX() - coordinate.getY()) < Math.abs(mostCentralCoordinate.getX() - mostCentralCoordinate.getY())) {
+                mostCentralCoordinate = coordinate;
+            }
+        }
+        return mostCentralCoordinate;
+    }
 
     public static void showChessboard(final Chessboard chessboard) {
         final JFrame frame = getGui(chessboard);
