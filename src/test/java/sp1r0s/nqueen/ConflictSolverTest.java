@@ -19,7 +19,7 @@ public class ConflictSolverTest {
 
     @Test
     public void testSolvability() {
-        for (int numberOfQueens = 8; numberOfQueens <= 100; numberOfQueens++) {
+        for (int numberOfQueens = 8; numberOfQueens <= 1000; numberOfQueens++) {
 
             final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
@@ -35,7 +35,7 @@ public class ConflictSolverTest {
 
     @Test
     public void testTimeComplexity() {
-        final List<Integer> queensSample = Arrays.asList(8, 100, 200, 400, 800, 1600, 3200, 6400, 12800);
+        final List<Integer> queensSample = Arrays.asList(8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192);
         for (Integer numberOfQueens : queensSample) {
             final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
@@ -46,6 +46,20 @@ public class ConflictSolverTest {
                     numberOfQueens),
                     chessboard.areQueensSafe());
         }
+
+    }
+
+    @Test
+    public void test() {
+        final int numberOfQueens = 2048;
+        final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
+
+        solver.solve(chessboard);
+
+        assertTrue(String.format("chessboard: %dx%d",
+                numberOfQueens,
+                numberOfQueens),
+                chessboard.areQueensSafe());
 
     }
 

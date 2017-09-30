@@ -1,8 +1,6 @@
 package sp1r0s.nqueen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ConflictSolver implements NQueensSolver {
 
@@ -20,7 +18,7 @@ public class ConflictSolver implements NQueensSolver {
         Set<Conflict> conflicts = chessboard.getConflicts();
         if (conflicts.size() == 1) {
             final Conflict conflict = conflicts.iterator().next();
-            Coordinates nextBestPosition = findNextBestPosition(chessboard, conflict.getB(), conflict.getA());
+            Coordinates nextBestPosition = findNextBestPosition(chessboard, conflict.getA());
             if (nextBestPosition != null) {
                 chessboard.move(conflict.getA(), nextBestPosition);
             }
@@ -29,11 +27,12 @@ public class ConflictSolver implements NQueensSolver {
             conflicts = chessboard.getConflicts();
             if (conflicts.size() == 1) {
                 final Conflict conflict = conflicts.iterator().next();
-                Coordinates nextBestPosition = findNextBestPosition(chessboard, conflict.getA(), conflict.getB());
+                Coordinates nextBestPosition = findNextBestPosition(chessboard, conflict.getB());
+
                 if (nextBestPosition != null) {
                     chessboard.move(conflict.getB(), nextBestPosition);
                 } else {
-                    nextBestPosition = findNextBestPosition(chessboard, conflict.getB(), conflict.getA());
+                    nextBestPosition = findNextBestPosition(chessboard, conflict.getA());
                     if (nextBestPosition != null) {
                         chessboard.move(conflict.getA(), nextBestPosition);
                     } else {
@@ -69,10 +68,10 @@ public class ConflictSolver implements NQueensSolver {
         }
     }
 
-    private Coordinates findNextBestPosition(Chessboard chessboard, Coordinates queenToStay, Coordinates queenToMove) {
-        final List<Coordinates>  newCoordinatesWith1Conflict = new ArrayList<>();
+    private Coordinates findNextBestPosition(Chessboard chessboard, Coordinates queenToMove) {
         Chessboard copy = new Chessboard(chessboard);
         Coordinates movingTarget = new Coordinates(queenToMove.getX(), queenToMove.getY());
+        List<Coordinates> next1ConflictTargets = new ArrayList<>();
         for (int i = 0; i < copy.getNumberOfRows(); i++) {
             Coordinates targetCoordinates = new Coordinates(i, queenToMove.getY());
             if (copy.getQueensLocation().contains(targetCoordinates)
@@ -84,7 +83,7 @@ public class ConflictSolver implements NQueensSolver {
             if (copy.areQueensSafe()) {
                 return targetCoordinates;
             } else if (copy.getConflicts().size() == 1) {
-                newCoordinatesWith1Conflict.add(targetCoordinates);
+                next1ConflictTargets.add(targetCoordinates);
             }
             movingTarget = targetCoordinates;
         }
@@ -101,27 +100,20 @@ public class ConflictSolver implements NQueensSolver {
             if (copy.areQueensSafe()) {
                 return targetCoordinates;
             } else if (copy.getConflicts().size() == 1) {
-                newCoordinatesWith1Conflict.add(targetCoordinates);
+                next1ConflictTargets.add(targetCoordinates);
             }
             movingTarget = targetCoordinates;
         }
 
-        if (!newCoordinatesWith1Conflict.isEmpty()) {
+        if (!next1ConflictTargets.isEmpty()) {
             // Avoid potential infinite loops, by returning a random 1-conflict solution
-//            return newCoordinatesWith1Conflict.get(new Random().nextInt(newCoordinatesWith1Conflict.size()));
-            Coordinates theMostDistantPosition = newCoordinatesWith1Conflict.get(0);
-            for (Coordinates coordinates : newCoordinatesWith1Conflict) {
-                int xDistanceDiff = Math.abs(coordinates.getX() - queenToStay.getX());
-                int yDistanceDiff = Math.abs(coordinates.getY() - queenToStay.getY());
-
-                int currentBestXDistanceDiff = Math.abs(theMostDistantPosition.getX() - queenToStay.getX());
-                int currentBestYDistanceDiff = Math.abs(theMostDistantPosition.getY() - queenToStay.getY());
-
-                if (xDistanceDiff > currentBestXDistanceDiff && yDistanceDiff > currentBestYDistanceDiff) {
-                    theMostDistantPosition = coordinates;
+            Coordinates returnTarget = next1ConflictTargets.get(0);
+            for (Coordinates next1ConflictTarget : next1ConflictTargets) {
+                if (Math.abs(next1ConflictTarget.getX() - next1ConflictTarget.getY()) < Math.abs(returnTarget.getX() - returnTarget.getY())) {
+                    returnTarget = next1ConflictTarget;
                 }
             }
-            return theMostDistantPosition;
+            return returnTarget;
         }
 
         return null;
