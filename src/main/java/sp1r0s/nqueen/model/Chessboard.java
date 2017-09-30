@@ -1,18 +1,17 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.model;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class Chessboard {
 
-    private static final Logger LOGGER = Logger.getLogger(Chessboard.class.getName());
+//    private static final Logger LOGGER = Logger.getLogger(Chessboard.class.getName());
 
     private static final String QUEEN_MARK = "Q";
 
+    private final Set<Coordinates> queensLocation;
     private String[][] squares;
-    private Set<Coordinates> queensLocation;
     private int numberOfRows;
     private int numberOfColumns;
 

@@ -1,5 +1,7 @@
 package sp1r0s.nqueen;
 
+import sp1r0s.nqueen.model.Chessboard;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.logging.Logger;

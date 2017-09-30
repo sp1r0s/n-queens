@@ -1,4 +1,7 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.util;
+
+import sp1r0s.nqueen.model.Chessboard;
+import sp1r0s.nqueen.model.Coordinates;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

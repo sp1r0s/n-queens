@@ -1,20 +1,20 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.model;
 
 public class Coordinates implements Comparable<Coordinates> {
 
-    int x;
-    int y;
+    private int x;
+    private int y;
 
     public Coordinates(int xCoord, int yCoord) {
         x = xCoord;
         y = yCoord;
     }
 
-    int getX() {
+    public int getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 

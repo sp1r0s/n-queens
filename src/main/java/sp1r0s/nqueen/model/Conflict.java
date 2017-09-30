@@ -1,4 +1,4 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.model;
 
 public class Conflict {
     private Coordinates a;

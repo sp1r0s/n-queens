@@ -1,25 +1,25 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.oneconflict;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
+import sp1r0s.nqueen.NQueensSolver;
+import sp1r0s.nqueen.model.Chessboard;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConflictSolverTest {
+public class OneConflictSolverTest {
 
     private NQueensSolver solver;
 
     @Before
     public void setUp() {
-        solver = new ConflictSolver();
+        solver = new OneConflictSolver();
     }
 
     @Test
     public void testSolvability() {
-        for (int numberOfQueens = 8; numberOfQueens <= 1000; numberOfQueens++) {
+        for (int numberOfQueens = 8; numberOfQueens <= 100; numberOfQueens++) {
 
             final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
@@ -34,24 +34,9 @@ public class ConflictSolverTest {
     }
 
     @Test
-    public void testTimeComplexity() {
-        final List<Integer> queensSample = Arrays.asList(8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192);
-        for (Integer numberOfQueens : queensSample) {
-            final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
-
-            solver.solve(chessboard);
-
-            assertTrue(String.format("chessboard: %dx%d",
-                    numberOfQueens,
-                    numberOfQueens),
-                    chessboard.areQueensSafe());
-        }
-
-    }
-
-    @Test
+    @Ignore
     public void test() {
-        final int numberOfQueens = 2048;
+        final int numberOfQueens = 8;
         final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
         solver.solve(chessboard);

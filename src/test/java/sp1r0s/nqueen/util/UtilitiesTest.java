@@ -1,7 +1,8 @@
-package sp1r0s.nqueen;
+package sp1r0s.nqueen.util;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import sp1r0s.nqueen.model.Chessboard;
 
 @Ignore
 public class UtilitiesTest {
