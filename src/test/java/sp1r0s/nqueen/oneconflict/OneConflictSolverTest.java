@@ -7,6 +7,7 @@ import sp1r0s.nqueen.NQueensSolver;
 import sp1r0s.nqueen.model.Chessboard;
 
 import static org.junit.Assert.assertTrue;
+import static sp1r0s.nqueen.util.Utilities.printChessboard;
 
 public class OneConflictSolverTest {
 
@@ -38,6 +39,7 @@ public class OneConflictSolverTest {
         final Chessboard chessboard = new Chessboard(numberOfQueens, numberOfQueens);
 
         solver.solve(chessboard);
+        printChessboard(chessboard);
 
         assertTrue(String.format("chessboard: %dx%d",
                                  numberOfQueens,
