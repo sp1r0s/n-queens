@@ -42,8 +42,45 @@ public class Chessboard {
     }
 
     public boolean areQueensSafe() {
-        final Set<Conflict> conflicts = getConflicts();
-        final boolean areSafe = conflicts.size() == 0;
+        final Set<Conflict> conflicts = new HashSet<>();
+
+        for (Coordinates coordinates : queensLocation) {
+            checkDown(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkUp(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkLeft(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkRight(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkUpLeftDiagonal(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkDownLeftDiagonal(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkUpRightDiagonal(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+            checkDownRightDiagonal(coordinates, conflicts);
+            if (!conflicts.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+
 //        if (!areSafe) {
 //            for (Conflict conflict : conflicts) {
 //                LOGGER.log(Level.SEVERE, String.format("Queen in position [%d,%d] threatens queen in position [%d,%d]",
@@ -53,7 +90,6 @@ public class Chessboard {
 //                        conflict.getA().getY()));
 //            }
 //        }
-        return areSafe;
     }
 
     public Set<Conflict> getConflicts() {

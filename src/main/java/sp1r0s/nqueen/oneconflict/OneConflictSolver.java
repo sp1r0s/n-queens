@@ -26,7 +26,7 @@ public class OneConflictSolver implements NQueensSolver {
     public void calibrate(final Chessboard chessboard) {
         final NextBestMoveFinder finder = new NextBestMoveFinder();
         Set<Conflict> conflicts;
-        while (!chessboard.areQueensSafe() && chessboard.getConflicts().size() == 1) {
+        while (chessboard.getConflicts().size() == 1) {
             conflicts = chessboard.getConflicts();
             final Conflict conflict = conflicts.iterator().next();
             Optional<Coordinates> nextBestPositionOptional = finder.find(chessboard, conflict.getB());

@@ -43,7 +43,7 @@ public class ChessboardTest {
         assertTrue(solution12x12.areQueensSafe());
 
         final Chessboard nonSolution = generateNonSolution();
-        assertTrue(nonSolution.areQueensSafe());
+        assertFalse(nonSolution.areQueensSafe());
     }
 
     @Test
