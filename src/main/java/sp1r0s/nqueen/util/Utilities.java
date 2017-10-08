@@ -35,28 +35,22 @@ public final class Utilities {
             Files.deleteIfExists(new File(fileName).toPath());
 
             final PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileName, true)));
-//            writer.print("  0");
-//            for (int columnIndex = 1; columnIndex < numberOfColumns; columnIndex++) {
-//                if (String.valueOf(columnIndex).length() == indexesSpace.length()) {
-//                    writer.print(String.format(" %d", columnIndex));
-//                } else {
-//                    writer.print(String.format("%s%d", indexesSpace, columnIndex));
-//                }
-//            }
-//            writer.println();
+            writer.print(indexesSpace + indexesSpace + " 0");
+            for (int columnIndex = 1; columnIndex < numberOfColumns; columnIndex++) {
+                writer.print(indexesSpace.substring(String.valueOf(columnIndex).length() - 1) + columnIndex);
+            }
+            writer.println();
             for (int i = 0; i < numberOfRows; i++) {
-                writer.print("|");
-                writer.print(" ");
+                writer.print(indexesSpace.substring(String.valueOf(i).length()) + i + "|");
                 for (int j = 0; j < numberOfColumns; j++) {
+                    writer.print(indexesSpace);
                     if (queensLocation.contains(new Coordinates(i, j))) {
                         writer.print("Q");
                     } else {
                         writer.print("*");
                     }
-                    writer.print(indexesSpace);
                 }
-                writer.println("|");
-//                writer.println("|" + i);
+                writer.println(indexesSpace + "|");
             }
             writer.close();
 
